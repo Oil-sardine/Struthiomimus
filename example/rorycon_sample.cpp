@@ -14,7 +14,7 @@ void setup(){
 void loop(){
     degree = myrorycon.deg();
 
-    Serial.printf("degree:%f[deg]",degree);
+    Serial.printf("degree:%f[deg]\n",degree);
 
     delay(1000);
 }
