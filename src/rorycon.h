@@ -6,10 +6,11 @@ class rorycon {
     unsigned long time_ms_old; // 前回時間（速度算出用）
     unsigned long time_ms_new; // 現在時間（速度算出用）
 
-    int pinA_num;
-    int pinB_num;
-    int count_max;
-    float radian;
+    int pinA_num; // A相のピン番号
+    int pinB_num; // B相のピン番号
+    int count_max; // 最高カウント数
+    float radian; // 現在角度（rad）
+    float radian_old; // 前回角度(rad)
 
    public:
     /// ロータリーエンコーダ（パルスカウンタ）のセットアップ
