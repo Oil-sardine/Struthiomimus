@@ -1,0 +1,23 @@
+const int ch1 = 0;
+const int ch2 = 1;
+
+int PWM = 128; // -255〜255で使う想定,ここにラグランジュ運動方程式からの値を入れる
+
+void setup() {
+    ledcSetup(ch1, 1000, 8); // 周波数1kHz, 8bit
+    ledcSetup(ch2, 1000, 8);
+
+    ledcAttachPin(MF_1, ch1);
+    ledcAttachPin(MF_2, ch2);
+}
+
+void loop() {
+    if (PWM > 0) {
+        ledcWrite(ch1, PWM);
+        ledcWrite(ch2, 0);
+    } else {
+        ledcWrite(ch1, 0);
+        ledcWrite(ch2, -PWM); // 符号反転
+    }
+    delay(10);
+}
