@@ -34,6 +34,7 @@ class MT6816{
 
    public:
 	MT6816(SPISettings settings = MT6816SPISettings, int nCS = -1);
+    MT6816(int nCS = -1);
     virtual ~MT6816();
 
     virtual void init(SPIClass* _spi = &SPI);

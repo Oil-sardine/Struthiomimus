@@ -24,19 +24,19 @@ class rorycon {
 
     /// 角度（ラジアン）の読み取り
 	/// @returns 角度(rad)
-    float rad();
+    double rad();
 
     /// 角度（度）の読み取り
 	/// @returns 角度(deg)
-    float deg();
+    double deg();
 
     /// 角速度（ラジアン毎秒）の読み取り
 	/// @returns 角速度(rad/s)
-    float rps_rad();
+    double rps_rad();
 
     /// 角速度（deg/s）の読み取り
 	/// @returns 角速度(deg/s)
-    float rps_deg();
+    double rps_deg();
 };
 
 #endif

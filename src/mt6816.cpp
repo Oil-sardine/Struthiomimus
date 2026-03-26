@@ -10,6 +10,10 @@
 MT6816::MT6816(SPISettings settings, int nCS) : settings(settings), nCS(nCS) {
 };
 
+MT6816::MT6816(int nCS) : nCS(nCS) {
+    settings = MT6816SPISettings;
+};
+
 MT6816::~MT6816() {
 };
 
