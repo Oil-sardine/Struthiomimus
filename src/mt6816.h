@@ -1,90 +1,67 @@
-/*
-This program based by https://github.com/eborghi10/AS5048A.git
-*/
-
-#ifndef mt6816_h
-#define mt6816_h
+#ifndef MT6816_H
+#define MT6816_H
 
 #include <SPI.h>
 
+static SPISettings MT6816SPISettings(1000000, MSBFIRST, SPI_MODE3);
+
 class MT6816{
    private:
-    uint8_t _cs;
-    bool eroorFlag;
-    bool ocfFlag;
+    int nCS = -1;
+    bool errorFlag = false;
+    bool no_magnetic_reading = false;
     uint16_t position;
-    bool debug;
-    uint8_t esp32_delay;
+    uint16_t position_old;
+    unsigned long time;
+    unsigned long time_old;
 
+    SPIClass* spi;
     SPISettings settings;
 
-    uint8_t spiCalcEvenParity(uint16_t);
-
-	/// マイコンの種類によってdelayを設定
-	void setDelay();
-
-	/// Closes the SPI connection
-	void close();
-
-	/// Read a register from the sensor
-	/// Takes the address of the register as a 16 bit uint16_t
-	/// Returns the value of the register
+	/// SPI通信で読み取り
+	/// @param registerAddress 16bitレジスタアドレス 
+	/// @returns 16bitレジスタ値
 	uint16_t read(uint16_t registerAddress);
 
-    /// Write to a register
-	/// Takes the 16-bit  address of the target register and the 16 bit uint16_t of data
-	/// to be written to that register
-	/// Returns the value of the register after the write has been performed. This
-	/// is read back from the sensor to ensure a sucessful write.
+    /// SPI通信で書き込み
+	/// @param registerAddress 16bitレジスタアドレス 
+    /// @param data 16bit書き込みデータ
+	/// @returns 16bitレジスタ値
 	uint16_t write(uint16_t registerAddress, uint16_t data);
 
-	/// Get the rotation of the sensor relative to the zero position.
-	/// @return {int16_t} between -2^13 and 2^13
-	int16_t getRotation();
-
-	/// Check if an error has been encountered.
-	bool error();
+	/// パリティチェック
+	bool parityCheck(uint16_t data);
 
    public:
-	/// Constructor
-	MT6816(uint8_t arg_cs, bool debug = false);
+	MT6816(SPISettings settings = MT6816SPISettings, int nCS = -1);
+    virtual ~MT6816();
 
-	/// Initialiser
-	/// Sets up the SPI interface
-	void begin();
+    virtual void init(SPIClass* _spi = &SPI);
 
-	/// Returns the raw angle directly from the sensor
-	int16_t getRawRotation();
+	/// AngleDataRegisterのRAWデータ
+	uint16_t readRawAngle();
 
-	/// Get the rotation of the sensor relative to the zero position in degrees.
-	/// @return {double} between 0 and 360
-	double getRotationInDegrees();
+	/// 角度データ（Deg）
+	/// @return 0~360°
+	double getRotation_Deg();
 
-	/// Get the rotation of the sensor relative to the zero position in radians.
-	/// @return {double} between 0 and 2 * PI
-	double getRotationInRadians();
+	/// 角度データ（Rad）
+	/// @return 0~2π
+	double getRotation_Rad();
 
-	/// returns the value of the state register
-	/// @return 16 bit uint16_t containing flags
-	uint16_t getState();
+    /// 角速度データ（Deg/s）
+    /// 角度の新規取得は行わないので注意
+	/// @return deg/s
+	double RPS_Deg();
 
-	/// Print the diagnostic register of the sensor
-	void printState();
+	/// 角速度データ（Rad/s）
+    /// 角度の新規取得は行わないので注意
+	/// @return rad/s
+	double RPS_Rad();
 
-	/// Returns the value used for Automatic Gain Control (Part of diagnostic register)
-	uint8_t getGain();
-
-	/// Get and clear the error register by reading it
-	String getErrors();
-
-	/// Get diagnostic
-	String getDiagnostic();
-
-	/// Set the zero position
-	void setZeroPosition(uint16_t arg_position);
-
-	/// Returns the current zero position
-	uint16_t getZeroPosition();
+	bool isNoMagneticReading() {
+        return no_magnetic_reading;
+    }
 };
 
 #endif
