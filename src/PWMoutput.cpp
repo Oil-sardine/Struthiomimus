@@ -4,7 +4,7 @@
 // モータパラメータ
 const float Kt = 49.0/3.0f;      // トルク定数 [Nm/A]
 const float Ke = 12.0/111.7f;      // 逆起電力定数 [V/(rad/s)]
-const float R  = 1.0f;      // 抵抗 [Ω]
+const float R  = 1.0f;      // 抵抗 [Ω] []
 const float V_supply = 12.0f; // 電源電圧 [V]
 
 // PWM設定
@@ -14,7 +14,7 @@ const int MF_2 = 35;
 const int ch1 = 0;
 const int ch2 = 1;
 
-void setup() {
+void pwmsetup() {
     ledcSetup(ch1, 1000, 8); // 周波数1kHz, 8bit
     ledcSetup(ch2, 1000, 8);
 
@@ -22,7 +22,7 @@ void setup() {
     ledcAttachPin(MF_2, ch2);
 }
 
-void loop() {
+void pwmloop() {
   float torque_cmd = 0.2f;  // 指令トルク [Nm]
   float omega = 50.0f;      // 角速度 [rad/s]（センサから取得するのが理想）
 
