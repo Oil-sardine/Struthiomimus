@@ -4,7 +4,7 @@
 // モータパラメータ
 const float Kt = 49.0/3.0f;      // トルク定数 [Nm/A]
 const float Ke = 12.0/111.7f;      // 逆起電力定数 [V/(rad/s)]
-const float R  = 1.0f;      // 抵抗 [Ω] []
+const float R  = 1.0f;      // 抵抗 [Ω] [未定]
 const float V_supply = 12.0f; // 電源電圧 [V]
 
 // PWM設定
@@ -22,9 +22,9 @@ void pwmsetup() {
     ledcAttachPin(MF_2, ch2);
 }
 
-void pwmloop() {
-  float torque_cmd = 0.2f;  // 指令トルク [Nm]
-  float omega = 50.0f;      // 角速度 [rad/s]（センサから取得するのが理想）
+void loop() {
+  float torque_cmd = 0.2f;  // 指令トルク [Nm]　[変数化]
+  float omega = 50.0f;      // 角速度 [rad/s][光学式ロータリーエンコーダーから]
 
   // ① トルク → 電流
   float current = torque_cmd / Kt;
