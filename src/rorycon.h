@@ -1,6 +1,8 @@
 #ifndef RORYCON_H
 #define RORYCON_H
 
+#include "driver/pcnt.h"
+
 class rorycon {
    private:
     unsigned long time_ms_old; // 前回時間（速度算出用）
@@ -12,12 +14,16 @@ class rorycon {
     float radian; // 現在角度（rad）
     float radian_old; // 前回角度(rad)
 
+    pcnt_config_t pcnt_config1 = {};
+    pcnt_config_t pcnt_config2 = {};
+
    public:
     /// ロータリーエンコーダ（パルスカウンタ）のセットアップ
 	/// @param pinA A相のピン番号
     /// @param pinB B相のピン番号
     /// @param reso 分解能（白と黒が一列に合計何個並んでるか）
-    void setup(int pinA, int pinB, int reso);
+    /// @param unit パルスカウンタのユニット(デフォルト:0)
+    void setup(int pinA, int pinB, int reso, int unit = 0);
 
     void count_start();
     void count_stop();
